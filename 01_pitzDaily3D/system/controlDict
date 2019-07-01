@@ -1,0 +1,1983 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v1812                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      controlDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+application     pimpleFoam;
+
+//Original:startFrom       latestTime;
+startFrom       startTime;
+
+startTime       0;
+
+//Original:deltaT          0.0001;
+deltaT          0.00005;
+
+stopAt          endTime;
+//NSteps          100;
+NSteps          10;
+
+//Original:endTime         0.3;
+endTime         #calc "$NSteps*$deltaT";
+
+//Original:writeControl    adjustableRunTime;
+//Original:writeInterval   0.01;
+
+writeControl    timeStep;
+writeInterval   1;
+
+purgeWrite      0;
+
+//Original:writeFormat     ascii;
+writeFormat     binary;
+
+writePrecision  14;
+
+writeCompression off;
+
+timeFormat      general;
+
+timePrecision   6;
+
+//Original:runTimeModifiable yes;
+runTimeModifiable no;
+
+//Original:adjustTimeStep  yes;
+adjustTimeStep  no;
+
+maxCo           5;
+
+
+// ************************************************************************* //
+OptimizationSwitches
+{
+    fileHandler uncollated;
+}
+
+functions{
+
+/* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+For the scalars, some ideas were taken from Wolf Dynamics tutorial 4 in youtube:
+https://www.youtube.com/watch?v=1KqdjMfVuNc
+And adjusted to run following the v1812 tutorials :
+incompressible/pimpleFoam/RAS/TJunction
+multiphase/interFoam/RAS/angledDuct
+  ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/ 
+
+//////////////////////////////////////////////////////////////////////////////
+    scalar1
+    {
+        type scalarTransport;
+        libs ("libsolverFunctionObjects.so");
+    
+        enabled true;
+        writeControl outputTime;
+        writeInterval 1;
+        write true;
+    
+        log yes;
+    
+        //nCorr 1;
+    
+        //diffussion coefficient
+        D 0.00001;
+    
+        //name of field
+        field s1;
+    
+        //use the schemes of field:
+        //No needed. This is defined in fvSchemes schemesField s1;
+
+        resetOnStartup false;
+    }
+//////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+    scalar2
+    {
+        type scalarTransport;
+        libs ("libsolverFunctionObjects.so");
+    
+        enabled true;
+        writeControl outputTime;
+        writeInterval 1;
+        write true;
+    
+        log yes;
+    
+        //nCorr 1;
+    
+        //diffussion coefficient
+        D 0.00001;
+    
+        //name of field
+        field s2;
+    
+        //use the schemes of field:
+        schemesField s1;
+
+        resetOnStartup false;
+    }
+//////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+    scalar3
+    {
+        type scalarTransport;
+        libs ("libsolverFunctionObjects.so");
+    
+        enabled true;
+        writeControl outputTime;
+        writeInterval 1;
+        write true;
+    
+        log yes;
+    
+        //nCorr 1;
+    
+        //diffussion coefficient
+        D 0.00001;
+    
+        //name of field
+        field s3;
+    
+        //use the schemes of field:
+        schemesField s1;
+
+        resetOnStartup false;
+    }
+//////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+    scalar4
+    {
+        type scalarTransport;
+        libs ("libsolverFunctionObjects.so");
+    
+        enabled true;
+        writeControl outputTime;
+        writeInterval 1;
+        write true;
+    
+        log yes;
+    
+        //nCorr 1;
+    
+        //diffussion coefficient
+        D 0.00001;
+    
+        //name of field
+        field s4;
+    
+        //use the schemes of field:
+        schemesField s1;
+
+        resetOnStartup false;
+    }
+//////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+    scalar5
+    {
+        type scalarTransport;
+        libs ("libsolverFunctionObjects.so");
+    
+        enabled true;
+        writeControl outputTime;
+        writeInterval 1;
+        write true;
+    
+        log yes;
+    
+        //nCorr 1;
+    
+        //diffussion coefficient
+        D 0.00001;
+    
+        //name of field
+        field s5;
+    
+        //use the schemes of field:
+        schemesField s1;
+
+        resetOnStartup false;
+    }
+//////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+    scalar6
+    {
+        type scalarTransport;
+        libs ("libsolverFunctionObjects.so");
+    
+        enabled true;
+        writeControl outputTime;
+        writeInterval 1;
+        write true;
+    
+        log yes;
+    
+        //nCorr 1;
+    
+        //diffussion coefficient
+        D 0.00001;
+    
+        //name of field
+        field s6;
+    
+        //use the schemes of field:
+        schemesField s1;
+
+        resetOnStartup false;
+    }
+//////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+    scalar7
+    {
+        type scalarTransport;
+        libs ("libsolverFunctionObjects.so");
+    
+        enabled true;
+        writeControl outputTime;
+        writeInterval 1;
+        write true;
+    
+        log yes;
+    
+        //nCorr 1;
+    
+        //diffussion coefficient
+        D 0.00001;
+    
+        //name of field
+        field s7;
+    
+        //use the schemes of field:
+        schemesField s1;
+
+        resetOnStartup false;
+    }
+//////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+    scalar8
+    {
+        type scalarTransport;
+        libs ("libsolverFunctionObjects.so");
+    
+        enabled true;
+        writeControl outputTime;
+        writeInterval 1;
+        write true;
+    
+        log yes;
+    
+        //nCorr 1;
+    
+        //diffussion coefficient
+        D 0.00001;
+    
+        //name of field
+        field s8;
+    
+        //use the schemes of field:
+        schemesField s1;
+
+        resetOnStartup false;
+    }
+//////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+    scalar9
+    {
+        type scalarTransport;
+        libs ("libsolverFunctionObjects.so");
+    
+        enabled true;
+        writeControl outputTime;
+        writeInterval 1;
+        write true;
+    
+        log yes;
+    
+        //nCorr 1;
+    
+        //diffussion coefficient
+        D 0.00001;
+    
+        //name of field
+        field s9;
+    
+        //use the schemes of field:
+        schemesField s1;
+
+        resetOnStartup false;
+    }
+//////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+    scalar10
+    {
+        type scalarTransport;
+        libs ("libsolverFunctionObjects.so");
+    
+        enabled true;
+        writeControl outputTime;
+        writeInterval 1;
+        write true;
+    
+        log yes;
+    
+        //nCorr 1;
+    
+        //diffussion coefficient
+        D 0.00001;
+    
+        //name of field
+        field s10;
+    
+        //use the schemes of field:
+        schemesField s1;
+
+        resetOnStartup false;
+    }
+//////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+    scalar11
+    {
+        type scalarTransport;
+        libs ("libsolverFunctionObjects.so");
+    
+        enabled true;
+        writeControl outputTime;
+        writeInterval 1;
+        write true;
+    
+        log yes;
+    
+        //nCorr 1;
+    
+        //diffussion coefficient
+        D 0.00001;
+    
+        //name of field
+        field s11;
+    
+        //use the schemes of field:
+        schemesField s1;
+
+        resetOnStartup false;
+    }
+//////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+    scalar12
+    {
+        type scalarTransport;
+        libs ("libsolverFunctionObjects.so");
+    
+        enabled true;
+        writeControl outputTime;
+        writeInterval 1;
+        write true;
+    
+        log yes;
+    
+        //nCorr 1;
+    
+        //diffussion coefficient
+        D 0.00001;
+    
+        //name of field
+        field s12;
+    
+        //use the schemes of field:
+        schemesField s1;
+
+        resetOnStartup false;
+    }
+//////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+    scalar13
+    {
+        type scalarTransport;
+        libs ("libsolverFunctionObjects.so");
+    
+        enabled true;
+        writeControl outputTime;
+        writeInterval 1;
+        write true;
+    
+        log yes;
+    
+        //nCorr 1;
+    
+        //diffussion coefficient
+        D 0.00001;
+    
+        //name of field
+        field s13;
+    
+        //use the schemes of field:
+        schemesField s1;
+
+        resetOnStartup false;
+    }
+//////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+    scalar14
+    {
+        type scalarTransport;
+        libs ("libsolverFunctionObjects.so");
+    
+        enabled true;
+        writeControl outputTime;
+        writeInterval 1;
+        write true;
+    
+        log yes;
+    
+        //nCorr 1;
+    
+        //diffussion coefficient
+        D 0.00001;
+    
+        //name of field
+        field s14;
+    
+        //use the schemes of field:
+        schemesField s1;
+
+        resetOnStartup false;
+    }
+//////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+    scalar15
+    {
+        type scalarTransport;
+        libs ("libsolverFunctionObjects.so");
+    
+        enabled true;
+        writeControl outputTime;
+        writeInterval 1;
+        write true;
+    
+        log yes;
+    
+        //nCorr 1;
+    
+        //diffussion coefficient
+        D 0.00001;
+    
+        //name of field
+        field s15;
+    
+        //use the schemes of field:
+        schemesField s1;
+
+        resetOnStartup false;
+    }
+//////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+    scalar16
+    {
+        type scalarTransport;
+        libs ("libsolverFunctionObjects.so");
+    
+        enabled true;
+        writeControl outputTime;
+        writeInterval 1;
+        write true;
+    
+        log yes;
+    
+        //nCorr 1;
+    
+        //diffussion coefficient
+        D 0.00001;
+    
+        //name of field
+        field s16;
+    
+        //use the schemes of field:
+        schemesField s1;
+
+        resetOnStartup false;
+    }
+//////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+    scalar17
+    {
+        type scalarTransport;
+        libs ("libsolverFunctionObjects.so");
+    
+        enabled true;
+        writeControl outputTime;
+        writeInterval 1;
+        write true;
+    
+        log yes;
+    
+        //nCorr 1;
+    
+        //diffussion coefficient
+        D 0.00001;
+    
+        //name of field
+        field s17;
+    
+        //use the schemes of field:
+        schemesField s1;
+
+        resetOnStartup false;
+    }
+//////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+    scalar18
+    {
+        type scalarTransport;
+        libs ("libsolverFunctionObjects.so");
+    
+        enabled true;
+        writeControl outputTime;
+        writeInterval 1;
+        write true;
+    
+        log yes;
+    
+        //nCorr 1;
+    
+        //diffussion coefficient
+        D 0.00001;
+    
+        //name of field
+        field s18;
+    
+        //use the schemes of field:
+        schemesField s1;
+
+        resetOnStartup false;
+    }
+//////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+    scalar19
+    {
+        type scalarTransport;
+        libs ("libsolverFunctionObjects.so");
+    
+        enabled true;
+        writeControl outputTime;
+        writeInterval 1;
+        write true;
+    
+        log yes;
+    
+        //nCorr 1;
+    
+        //diffussion coefficient
+        D 0.00001;
+    
+        //name of field
+        field s19;
+    
+        //use the schemes of field:
+        schemesField s1;
+
+        resetOnStartup false;
+    }
+//////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+    scalar20
+    {
+        type scalarTransport;
+        libs ("libsolverFunctionObjects.so");
+    
+        enabled true;
+        writeControl outputTime;
+        writeInterval 1;
+        write true;
+    
+        log yes;
+    
+        //nCorr 1;
+    
+        //diffussion coefficient
+        D 0.00001;
+    
+        //name of field
+        field s20;
+    
+        //use the schemes of field:
+        schemesField s1;
+
+        resetOnStartup false;
+    }
+//////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+    scalar21
+    {
+        type scalarTransport;
+        libs ("libsolverFunctionObjects.so");
+    
+        enabled true;
+        writeControl outputTime;
+        writeInterval 1;
+        write true;
+    
+        log yes;
+    
+        //nCorr 1;
+    
+        //diffussion coefficient
+        D 0.00001;
+    
+        //name of field
+        field s21;
+    
+        //use the schemes of field:
+        schemesField s1;
+
+        resetOnStartup false;
+    }
+//////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+    scalar22
+    {
+        type scalarTransport;
+        libs ("libsolverFunctionObjects.so");
+    
+        enabled true;
+        writeControl outputTime;
+        writeInterval 1;
+        write true;
+    
+        log yes;
+    
+        //nCorr 1;
+    
+        //diffussion coefficient
+        D 0.00001;
+    
+        //name of field
+        field s22;
+    
+        //use the schemes of field:
+        schemesField s1;
+
+        resetOnStartup false;
+    }
+//////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+    scalar23
+    {
+        type scalarTransport;
+        libs ("libsolverFunctionObjects.so");
+    
+        enabled true;
+        writeControl outputTime;
+        writeInterval 1;
+        write true;
+    
+        log yes;
+    
+        //nCorr 1;
+    
+        //diffussion coefficient
+        D 0.00001;
+    
+        //name of field
+        field s23;
+    
+        //use the schemes of field:
+        schemesField s1;
+
+        resetOnStartup false;
+    }
+//////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+    scalar24
+    {
+        type scalarTransport;
+        libs ("libsolverFunctionObjects.so");
+    
+        enabled true;
+        writeControl outputTime;
+        writeInterval 1;
+        write true;
+    
+        log yes;
+    
+        //nCorr 1;
+    
+        //diffussion coefficient
+        D 0.00001;
+    
+        //name of field
+        field s24;
+    
+        //use the schemes of field:
+        schemesField s1;
+
+        resetOnStartup false;
+    }
+//////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+    scalar25
+    {
+        type scalarTransport;
+        libs ("libsolverFunctionObjects.so");
+    
+        enabled true;
+        writeControl outputTime;
+        writeInterval 1;
+        write true;
+    
+        log yes;
+    
+        //nCorr 1;
+    
+        //diffussion coefficient
+        D 0.00001;
+    
+        //name of field
+        field s25;
+    
+        //use the schemes of field:
+        schemesField s1;
+
+        resetOnStartup false;
+    }
+//////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+    scalar26
+    {
+        type scalarTransport;
+        libs ("libsolverFunctionObjects.so");
+    
+        enabled true;
+        writeControl outputTime;
+        writeInterval 1;
+        write true;
+    
+        log yes;
+    
+        //nCorr 1;
+    
+        //diffussion coefficient
+        D 0.00001;
+    
+        //name of field
+        field s26;
+    
+        //use the schemes of field:
+        schemesField s1;
+
+        resetOnStartup false;
+    }
+//////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+    scalar27
+    {
+        type scalarTransport;
+        libs ("libsolverFunctionObjects.so");
+    
+        enabled true;
+        writeControl outputTime;
+        writeInterval 1;
+        write true;
+    
+        log yes;
+    
+        //nCorr 1;
+    
+        //diffussion coefficient
+        D 0.00001;
+    
+        //name of field
+        field s27;
+    
+        //use the schemes of field:
+        schemesField s1;
+
+        resetOnStartup false;
+    }
+//////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+    scalar28
+    {
+        type scalarTransport;
+        libs ("libsolverFunctionObjects.so");
+    
+        enabled true;
+        writeControl outputTime;
+        writeInterval 1;
+        write true;
+    
+        log yes;
+    
+        //nCorr 1;
+    
+        //diffussion coefficient
+        D 0.00001;
+    
+        //name of field
+        field s28;
+    
+        //use the schemes of field:
+        schemesField s1;
+
+        resetOnStartup false;
+    }
+//////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+    scalar29
+    {
+        type scalarTransport;
+        libs ("libsolverFunctionObjects.so");
+    
+        enabled true;
+        writeControl outputTime;
+        writeInterval 1;
+        write true;
+    
+        log yes;
+    
+        //nCorr 1;
+    
+        //diffussion coefficient
+        D 0.00001;
+    
+        //name of field
+        field s29;
+    
+        //use the schemes of field:
+        schemesField s1;
+
+        resetOnStartup false;
+    }
+//////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+    scalar30
+    {
+        type scalarTransport;
+        libs ("libsolverFunctionObjects.so");
+    
+        enabled true;
+        writeControl outputTime;
+        writeInterval 1;
+        write true;
+    
+        log yes;
+    
+        //nCorr 1;
+    
+        //diffussion coefficient
+        D 0.00001;
+    
+        //name of field
+        field s30;
+    
+        //use the schemes of field:
+        schemesField s1;
+
+        resetOnStartup false;
+    }
+//////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+    scalar31
+    {
+        type scalarTransport;
+        libs ("libsolverFunctionObjects.so");
+    
+        enabled true;
+        writeControl outputTime;
+        writeInterval 1;
+        write true;
+    
+        log yes;
+    
+        //nCorr 1;
+    
+        //diffussion coefficient
+        D 0.00001;
+    
+        //name of field
+        field s31;
+    
+        //use the schemes of field:
+        schemesField s1;
+
+        resetOnStartup false;
+    }
+//////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+    scalar32
+    {
+        type scalarTransport;
+        libs ("libsolverFunctionObjects.so");
+    
+        enabled true;
+        writeControl outputTime;
+        writeInterval 1;
+        write true;
+    
+        log yes;
+    
+        //nCorr 1;
+    
+        //diffussion coefficient
+        D 0.00001;
+    
+        //name of field
+        field s32;
+    
+        //use the schemes of field:
+        schemesField s1;
+
+        resetOnStartup false;
+    }
+//////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+    scalar33
+    {
+        type scalarTransport;
+        libs ("libsolverFunctionObjects.so");
+    
+        enabled true;
+        writeControl outputTime;
+        writeInterval 1;
+        write true;
+    
+        log yes;
+    
+        //nCorr 1;
+    
+        //diffussion coefficient
+        D 0.00001;
+    
+        //name of field
+        field s33;
+    
+        //use the schemes of field:
+        schemesField s1;
+
+        resetOnStartup false;
+    }
+//////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+    scalar34
+    {
+        type scalarTransport;
+        libs ("libsolverFunctionObjects.so");
+    
+        enabled true;
+        writeControl outputTime;
+        writeInterval 1;
+        write true;
+    
+        log yes;
+    
+        //nCorr 1;
+    
+        //diffussion coefficient
+        D 0.00001;
+    
+        //name of field
+        field s34;
+    
+        //use the schemes of field:
+        schemesField s1;
+
+        resetOnStartup false;
+    }
+//////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+    scalar35
+    {
+        type scalarTransport;
+        libs ("libsolverFunctionObjects.so");
+    
+        enabled true;
+        writeControl outputTime;
+        writeInterval 1;
+        write true;
+    
+        log yes;
+    
+        //nCorr 1;
+    
+        //diffussion coefficient
+        D 0.00001;
+    
+        //name of field
+        field s35;
+    
+        //use the schemes of field:
+        schemesField s1;
+
+        resetOnStartup false;
+    }
+//////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+    scalar36
+    {
+        type scalarTransport;
+        libs ("libsolverFunctionObjects.so");
+    
+        enabled true;
+        writeControl outputTime;
+        writeInterval 1;
+        write true;
+    
+        log yes;
+    
+        //nCorr 1;
+    
+        //diffussion coefficient
+        D 0.00001;
+    
+        //name of field
+        field s36;
+    
+        //use the schemes of field:
+        schemesField s1;
+
+        resetOnStartup false;
+    }
+//////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+    scalar37
+    {
+        type scalarTransport;
+        libs ("libsolverFunctionObjects.so");
+    
+        enabled true;
+        writeControl outputTime;
+        writeInterval 1;
+        write true;
+    
+        log yes;
+    
+        //nCorr 1;
+    
+        //diffussion coefficient
+        D 0.00001;
+    
+        //name of field
+        field s37;
+    
+        //use the schemes of field:
+        schemesField s1;
+
+        resetOnStartup false;
+    }
+//////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+    scalar38
+    {
+        type scalarTransport;
+        libs ("libsolverFunctionObjects.so");
+    
+        enabled true;
+        writeControl outputTime;
+        writeInterval 1;
+        write true;
+    
+        log yes;
+    
+        //nCorr 1;
+    
+        //diffussion coefficient
+        D 0.00001;
+    
+        //name of field
+        field s38;
+    
+        //use the schemes of field:
+        schemesField s1;
+
+        resetOnStartup false;
+    }
+//////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+    scalar39
+    {
+        type scalarTransport;
+        libs ("libsolverFunctionObjects.so");
+    
+        enabled true;
+        writeControl outputTime;
+        writeInterval 1;
+        write true;
+    
+        log yes;
+    
+        //nCorr 1;
+    
+        //diffussion coefficient
+        D 0.00001;
+    
+        //name of field
+        field s39;
+    
+        //use the schemes of field:
+        schemesField s1;
+
+        resetOnStartup false;
+    }
+//////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+    scalar40
+    {
+        type scalarTransport;
+        libs ("libsolverFunctionObjects.so");
+    
+        enabled true;
+        writeControl outputTime;
+        writeInterval 1;
+        write true;
+    
+        log yes;
+    
+        //nCorr 1;
+    
+        //diffussion coefficient
+        D 0.00001;
+    
+        //name of field
+        field s40;
+    
+        //use the schemes of field:
+        schemesField s1;
+
+        resetOnStartup false;
+    }
+//////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+    scalar41
+    {
+        type scalarTransport;
+        libs ("libsolverFunctionObjects.so");
+    
+        enabled true;
+        writeControl outputTime;
+        writeInterval 1;
+        write true;
+    
+        log yes;
+    
+        //nCorr 1;
+    
+        //diffussion coefficient
+        D 0.00001;
+    
+        //name of field
+        field s41;
+    
+        //use the schemes of field:
+        schemesField s1;
+
+        resetOnStartup false;
+    }
+//////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+    scalar41
+    {
+        type scalarTransport;
+        libs ("libsolverFunctionObjects.so");
+    
+        enabled true;
+        writeControl outputTime;
+        writeInterval 1;
+        write true;
+    
+        log yes;
+    
+        //nCorr 1;
+    
+        //diffussion coefficient
+        D 0.00001;
+    
+        //name of field
+        field s41;
+    
+        //use the schemes of field:
+        schemesField s1;
+
+        resetOnStartup false;
+    }
+//////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+    scalar42
+    {
+        type scalarTransport;
+        libs ("libsolverFunctionObjects.so");
+    
+        enabled true;
+        writeControl outputTime;
+        writeInterval 1;
+        write true;
+    
+        log yes;
+    
+        //nCorr 1;
+    
+        //diffussion coefficient
+        D 0.00001;
+    
+        //name of field
+        field s42;
+    
+        //use the schemes of field:
+        schemesField s1;
+
+        resetOnStartup false;
+    }
+//////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+    scalar43
+    {
+        type scalarTransport;
+        libs ("libsolverFunctionObjects.so");
+    
+        enabled true;
+        writeControl outputTime;
+        writeInterval 1;
+        write true;
+    
+        log yes;
+    
+        //nCorr 1;
+    
+        //diffussion coefficient
+        D 0.00001;
+    
+        //name of field
+        field s43;
+    
+        //use the schemes of field:
+        schemesField s1;
+
+        resetOnStartup false;
+    }
+//////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+    scalar44
+    {
+        type scalarTransport;
+        libs ("libsolverFunctionObjects.so");
+    
+        enabled true;
+        writeControl outputTime;
+        writeInterval 1;
+        write true;
+    
+        log yes;
+    
+        //nCorr 1;
+    
+        //diffussion coefficient
+        D 0.00001;
+    
+        //name of field
+        field s44;
+    
+        //use the schemes of field:
+        schemesField s1;
+
+        resetOnStartup false;
+    }
+//////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+    scalar45
+    {
+        type scalarTransport;
+        libs ("libsolverFunctionObjects.so");
+    
+        enabled true;
+        writeControl outputTime;
+        writeInterval 1;
+        write true;
+    
+        log yes;
+    
+        //nCorr 1;
+    
+        //diffussion coefficient
+        D 0.00001;
+    
+        //name of field
+        field s45;
+    
+        //use the schemes of field:
+        schemesField s1;
+
+        resetOnStartup false;
+    }
+//////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+    scalar46
+    {
+        type scalarTransport;
+        libs ("libsolverFunctionObjects.so");
+    
+        enabled true;
+        writeControl outputTime;
+        writeInterval 1;
+        write true;
+    
+        log yes;
+    
+        //nCorr 1;
+    
+        //diffussion coefficient
+        D 0.00001;
+    
+        //name of field
+        field s46;
+    
+        //use the schemes of field:
+        schemesField s1;
+
+        resetOnStartup false;
+    }
+//////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+    scalar47
+    {
+        type scalarTransport;
+        libs ("libsolverFunctionObjects.so");
+    
+        enabled true;
+        writeControl outputTime;
+        writeInterval 1;
+        write true;
+    
+        log yes;
+    
+        //nCorr 1;
+    
+        //diffussion coefficient
+        D 0.00001;
+    
+        //name of field
+        field s47;
+    
+        //use the schemes of field:
+        schemesField s1;
+
+        resetOnStartup false;
+    }
+//////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+    scalar48
+    {
+        type scalarTransport;
+        libs ("libsolverFunctionObjects.so");
+    
+        enabled true;
+        writeControl outputTime;
+        writeInterval 1;
+        write true;
+    
+        log yes;
+    
+        //nCorr 1;
+    
+        //diffussion coefficient
+        D 0.00001;
+    
+        //name of field
+        field s48;
+    
+        //use the schemes of field:
+        schemesField s1;
+
+        resetOnStartup false;
+    }
+//////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+    scalar49
+    {
+        type scalarTransport;
+        libs ("libsolverFunctionObjects.so");
+    
+        enabled true;
+        writeControl outputTime;
+        writeInterval 1;
+        write true;
+    
+        log yes;
+    
+        //nCorr 1;
+    
+        //diffussion coefficient
+        D 0.00001;
+    
+        //name of field
+        field s49;
+    
+        //use the schemes of field:
+        schemesField s1;
+
+        resetOnStartup false;
+    }
+//////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+    scalar50
+    {
+        type scalarTransport;
+        libs ("libsolverFunctionObjects.so");
+    
+        enabled true;
+        writeControl outputTime;
+        writeInterval 1;
+        write true;
+    
+        log yes;
+    
+        //nCorr 1;
+    
+        //diffussion coefficient
+        D 0.00001;
+    
+        //name of field
+        field s50;
+    
+        //use the schemes of field:
+        schemesField s1;
+
+        resetOnStartup false;
+    }
+//////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+    scalar51
+    {
+        type scalarTransport;
+        libs ("libsolverFunctionObjects.so");
+    
+        enabled true;
+        writeControl outputTime;
+        writeInterval 1;
+        write true;
+    
+        log yes;
+    
+        //nCorr 1;
+    
+        //diffussion coefficient
+        D 0.00001;
+    
+        //name of field
+        field s51;
+    
+        //use the schemes of field:
+        schemesField s1;
+
+        resetOnStartup false;
+    }
+//////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+    scalar52
+    {
+        type scalarTransport;
+        libs ("libsolverFunctionObjects.so");
+    
+        enabled true;
+        writeControl outputTime;
+        writeInterval 1;
+        write true;
+    
+        log yes;
+    
+        //nCorr 1;
+    
+        //diffussion coefficient
+        D 0.00001;
+    
+        //name of field
+        field s52;
+    
+        //use the schemes of field:
+        schemesField s1;
+
+        resetOnStartup false;
+    }
+//////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+    scalar53
+    {
+        type scalarTransport;
+        libs ("libsolverFunctionObjects.so");
+    
+        enabled true;
+        writeControl outputTime;
+        writeInterval 1;
+        write true;
+    
+        log yes;
+    
+        //nCorr 1;
+    
+        //diffussion coefficient
+        D 0.00001;
+    
+        //name of field
+        field s53;
+    
+        //use the schemes of field:
+        schemesField s1;
+
+        resetOnStartup false;
+    }
+//////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+    scalar54
+    {
+        type scalarTransport;
+        libs ("libsolverFunctionObjects.so");
+    
+        enabled true;
+        writeControl outputTime;
+        writeInterval 1;
+        write true;
+    
+        log yes;
+    
+        //nCorr 1;
+    
+        //diffussion coefficient
+        D 0.00001;
+    
+        //name of field
+        field s54;
+    
+        //use the schemes of field:
+        schemesField s1;
+
+        resetOnStartup false;
+    }
+//////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+    scalar55
+    {
+        type scalarTransport;
+        libs ("libsolverFunctionObjects.so");
+    
+        enabled true;
+        writeControl outputTime;
+        writeInterval 1;
+        write true;
+    
+        log yes;
+    
+        //nCorr 1;
+    
+        //diffussion coefficient
+        D 0.00001;
+    
+        //name of field
+        field s55;
+    
+        //use the schemes of field:
+        schemesField s1;
+
+        resetOnStartup false;
+    }
+//////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+    scalar56
+    {
+        type scalarTransport;
+        libs ("libsolverFunctionObjects.so");
+    
+        enabled true;
+        writeControl outputTime;
+        writeInterval 1;
+        write true;
+    
+        log yes;
+    
+        //nCorr 1;
+    
+        //diffussion coefficient
+        D 0.00001;
+    
+        //name of field
+        field s56;
+    
+        //use the schemes of field:
+        schemesField s1;
+
+        resetOnStartup false;
+    }
+//////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+    scalar57
+    {
+        type scalarTransport;
+        libs ("libsolverFunctionObjects.so");
+    
+        enabled true;
+        writeControl outputTime;
+        writeInterval 1;
+        write true;
+    
+        log yes;
+    
+        //nCorr 1;
+    
+        //diffussion coefficient
+        D 0.00001;
+    
+        //name of field
+        field s57;
+    
+        //use the schemes of field:
+        schemesField s1;
+
+        resetOnStartup false;
+    }
+//////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+    scalar58
+    {
+        type scalarTransport;
+        libs ("libsolverFunctionObjects.so");
+    
+        enabled true;
+        writeControl outputTime;
+        writeInterval 1;
+        write true;
+    
+        log yes;
+    
+        //nCorr 1;
+    
+        //diffussion coefficient
+        D 0.00001;
+    
+        //name of field
+        field s58;
+    
+        //use the schemes of field:
+        schemesField s1;
+
+        resetOnStartup false;
+    }
+//////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+    scalar59
+    {
+        type scalarTransport;
+        libs ("libsolverFunctionObjects.so");
+    
+        enabled true;
+        writeControl outputTime;
+        writeInterval 1;
+        write true;
+    
+        log yes;
+    
+        //nCorr 1;
+    
+        //diffussion coefficient
+        D 0.00001;
+    
+        //name of field
+        field s59;
+    
+        //use the schemes of field:
+        schemesField s1;
+
+        resetOnStartup false;
+    }
+//////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+    scalar60
+    {
+        type scalarTransport;
+        libs ("libsolverFunctionObjects.so");
+    
+        enabled true;
+        writeControl outputTime;
+        writeInterval 1;
+        write true;
+    
+        log yes;
+    
+        //nCorr 1;
+    
+        //diffussion coefficient
+        D 0.00001;
+    
+        //name of field
+        field s60;
+    
+        //use the schemes of field:
+        schemesField s1;
+
+        resetOnStartup false;
+    }
+//////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+    scalar61
+    {
+        type scalarTransport;
+        libs ("libsolverFunctionObjects.so");
+    
+        enabled true;
+        writeControl outputTime;
+        writeInterval 1;
+        write true;
+    
+        log yes;
+    
+        //nCorr 1;
+    
+        //diffussion coefficient
+        D 0.00001;
+    
+        //name of field
+        field s61;
+    
+        //use the schemes of field:
+        schemesField s1;
+
+        resetOnStartup false;
+    }
+//////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+    scalar62
+    {
+        type scalarTransport;
+        libs ("libsolverFunctionObjects.so");
+    
+        enabled true;
+        writeControl outputTime;
+        writeInterval 1;
+        write true;
+    
+        log yes;
+    
+        //nCorr 1;
+    
+        //diffussion coefficient
+        D 0.00001;
+    
+        //name of field
+        field s62;
+    
+        //use the schemes of field:
+        schemesField s1;
+
+        resetOnStartup false;
+    }
+//////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+    scalar63
+    {
+        type scalarTransport;
+        libs ("libsolverFunctionObjects.so");
+    
+        enabled true;
+        writeControl outputTime;
+        writeInterval 1;
+        write true;
+    
+        log yes;
+    
+        //nCorr 1;
+    
+        //diffussion coefficient
+        D 0.00001;
+    
+        //name of field
+        field s63;
+    
+        //use the schemes of field:
+        schemesField s1;
+
+        resetOnStartup false;
+    }
+//////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+    scalar64
+    {
+        type scalarTransport;
+        libs ("libsolverFunctionObjects.so");
+    
+        enabled true;
+        writeControl outputTime;
+        writeInterval 1;
+        write true;
+    
+        log yes;
+    
+        //nCorr 1;
+    
+        //diffussion coefficient
+        D 0.00001;
+    
+        //name of field
+        field s64;
+    
+        //use the schemes of field:
+        schemesField s1;
+
+        resetOnStartup false;
+    }
+//////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+    scalar65
+    {
+        type scalarTransport;
+        libs ("libsolverFunctionObjects.so");
+    
+        enabled true;
+        writeControl outputTime;
+        writeInterval 1;
+        write true;
+    
+        log yes;
+    
+        //nCorr 1;
+    
+        //diffussion coefficient
+        D 0.00001;
+    
+        //name of field
+        field s65;
+    
+        //use the schemes of field:
+        schemesField s1;
+
+        resetOnStartup false;
+    }
+//////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+    scalar66
+    {
+        type scalarTransport;
+        libs ("libsolverFunctionObjects.so");
+    
+        enabled true;
+        writeControl outputTime;
+        writeInterval 1;
+        write true;
+    
+        log yes;
+    
+        //nCorr 1;
+    
+        //diffussion coefficient
+        D 0.00001;
+    
+        //name of field
+        field s66;
+    
+        //use the schemes of field:
+        schemesField s1;
+
+        resetOnStartup false;
+    }
+//////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+    scalar67
+    {
+        type scalarTransport;
+        libs ("libsolverFunctionObjects.so");
+    
+        enabled true;
+        writeControl outputTime;
+        writeInterval 1;
+        write true;
+    
+        log yes;
+    
+        //nCorr 1;
+    
+        //diffussion coefficient
+        D 0.00001;
+    
+        //name of field
+        field s67;
+    
+        //use the schemes of field:
+        schemesField s1;
+
+        resetOnStartup false;
+    }
+//////////////////////////////////////////////////////////////////////////////
+
+}

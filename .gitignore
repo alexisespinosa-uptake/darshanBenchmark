@@ -1,0 +1,16 @@
+#.....................
+#Ignoring some OpenFOAM subdirectories
+#The result subdirectories:
+processor*/
+#The mesh subdirectories:
+polyMesh/
+#The dynamic code subdirectories
+dynamicCode/
+
+#.....................
+#Ignoring hidden files
+##.*
+
+#.....................
+#Ignoring slurm output files
+slurm*.out
